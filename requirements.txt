@@ -3,3 +3,4 @@ moviepy
 python-dotenv
 requests
 streamlit
+Pillow

@@ -1,6 +1,7 @@
 import streamlit as st
 import yt_dlp, json, os, requests, tempfile, base64, time
 from moviepy.video.io.VideoFileClip import VideoFileClip
+from PIL import Image
 import Video_Converter
 
 
@@ -64,8 +65,9 @@ st.title("🎬 :red[Video Processor] :sunglasses:")
 st.markdown(":information_source: :blue[Download YouTube videos or upload MP4 files → get MP4 & MP3 → auto-upload to Jasper KB]")
     # Display logo and header
 try:
-    filename = "Static/Cadence_Logo_Red_185_Reg.png"
-    img = os.path.join(os.path.dirname(__file__), filename)
+    filename = "static/Cadence_Logo_Red_185_Reg.png"
+    img_path = os.path.join(os.path.dirname(__file__), filename)
+    img = Image.open(img_path)
     st.logo(img,
             size="large",
             link="https://www.cadence.com/en_US/home.html",
@@ -131,11 +133,8 @@ def upload_downloads():
     if "upload_result" not in st.session_state:
         return
     result = st.session_state["upload_result"]
-    col1, col2 = st.columns(2)
-    with col1:
-        st.download_button(":material/download: Download MP4", result["mp4_data"],
-                           file_name=f"{result['title']}.mp4", mime="video/mp4")
-    with col2:
+    col1 = st.columns(2)
+    with col1[0]:
         st.download_button(":material/download: Download MP3", result["mp3_data"],
                            file_name=f"{result['title']}.mp3", mime="audio/mpeg")
 
@@ -155,7 +154,7 @@ with tab2:
 
                 st.write("☁️ Uploading to Jasper Knowledge Base...")
                 time.sleep(5)  # Simulate waiting time
-                Video_Converter.call_jasper_api(mp3_path)
+                Video_Converter.call_jasper_api(mp3_path) #uncomment for testing purposes
                 
                 status.update(label="✅ Done!", state="complete", expanded=False)
 
@@ -163,11 +162,9 @@ with tab2:
             st.success(f"**{title}** processed successfully! Please check your Jasper Knowledge Base for the new entry.")
 
             # Read file bytes into session_state so they persist across reruns
-            with open(mp4_path, "rb") as f:
-                mp4_data = f.read()
             with open(mp3_path, "rb") as f:
                 mp3_data = f.read()
-            st.session_state["upload_result"] = {"mp4_data": mp4_data, "mp3_data": mp3_data, "title": title}
+            st.session_state["upload_result"] = {"mp3_data": mp3_data, "title": title}
 
         except Exception as e:
             st.error(f"❌ Error: {e}")
