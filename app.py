@@ -14,7 +14,7 @@ Video_Converter.API_ENDPOINT = st.secrets["API_ENDPOINT"]
 st.set_page_config(page_title="Video Converter", page_icon="🎬")
 
 try:
-    base_64_img = base64.b64encode(open("Static/Cadence_Background.jpg", "rb").read()).decode()
+    base_64_img = base64.b64encode(open("static/Cadence_Background.jpg", "rb").read()).decode()
     page_elements = f'''
     <style>
         [data-testid="stAppViewContainer"] {{
