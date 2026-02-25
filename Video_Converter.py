@@ -52,6 +52,42 @@ def call_jasper_api(file):
     finally:
         form_data["file"][1].close()  # Close the file after the request is done
 
+def direct_youtube_video_download(video_url, output_dir=None):
+    try:
+        # Get video info first
+        with yt_dlp.YoutubeDL({
+            'quiet': True,
+            'extractor_args': {'youtube': {'player_client': ['android_creator', 'web', 'ios']}},
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+        }) as ydl:
+            info = ydl.extract_info(video_url, download=False)
+            video_title = info.get('title', 'No Title')
+ 
+        # Sanitize title for use as filename
+        safe_title = "".join(c for c in video_title if c.isalnum() or c in " _-").strip()
+ 
+        # Use a temp directory if none provided
+        if output_dir is None:
+            output_dir = tempfile.mkdtemp()
+ 
+        full_path = os.path.join(output_dir, f"{safe_title}.mp4")
+ 
+        # Download the video
+        ydl_opts = {
+            'format': 'best[ext=mp4]',
+            'outtmpl': full_path,
+            'quiet': True,
+            'no_warnings': True,
+            'extractor_args': {'youtube': {'player_client': ['android_creaor', 'web', 'ios']}},
+            'user_agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0.0.0 Safari/537.36'
+        }
+        with yt_dlp.YoutubeDL(ydl_opts) as ydl_dl:
+            ydl_dl.download([video_url])
+ 
+        return full_path, video_title
+    except Exception as e:
+        raise RuntimeError(f"YouTube download failed: {e}")
+
 # download the youtube video and save it 
 def download_youtube_video(video_url, output_path=".", filename="downloaded_video.mp4") -> str:
     try:

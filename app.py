@@ -99,7 +99,7 @@ with tab1:
         try:
             with st.status("Getting video data...", expanded=True) as status:
                 st.write("⬇️ Downloading video...")
-                mp4_path, title = Video_Converter.download_youtube_video(url, tmp_dir)
+                mp4_path, title = Video_Converter.direct_youtube_video_download(url, tmp_dir)
                 if mp4_path is None:
                     raise ValueError("Failed to download the YouTube video. Please check the URL and try again.")
                 time.sleep(5)  # Simulate waiting time
