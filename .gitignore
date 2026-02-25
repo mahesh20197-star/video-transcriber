@@ -1,0 +1,23 @@
+# Secrets / env files
+.streamlit/secrets.toml
+key.env
+*.env
+
+# Python cache
+__pycache__/
+*.pyc
+*.pyo
+
+# Downloaded/converted media files
+video-audio-folder/
+
+# macOS
+.DS_Store
+
+# IDE
+.vscode/
+*.code-workspace
+
+# Temp files
+*.tmp
+*.log

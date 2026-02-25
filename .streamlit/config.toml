@@ -1,0 +1,5 @@
+[theme]
+font = "Arial"
+
+[server]
+maxUploadSize = 4000
