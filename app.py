@@ -100,10 +100,14 @@ with tab1:
             with st.status("Getting video data...", expanded=True) as status:
                 st.write("⬇️ Downloading video...")
                 mp4_path, title = Video_Converter.direct_youtube_video_download(url, tmp_dir)
+                if mp4_path is None:
+                    raise ValueError("Failed to download the YouTube video. Please check the URL and try again.")
                 time.sleep(5)  # Simulate waiting time
 
                 st.write("🔄 Converting to MP3...")
                 mp3_path = Video_Converter.convert_video_to_mp3(mp4_path)
+                if mp3_path is None:
+                    raise ValueError("Failed to convert video to MP3.")
                 time.sleep(5)  # Simulate waiting time
 
                 st.write("☁️ Uploading to Jasper Knowledge Base...")
@@ -150,6 +154,8 @@ with tab2:
             with st.status("Getting video data...", expanded=True) as status:
                 st.write("🔄 Converting to MP3...") 
                 mp3_path = Video_Converter.convert_video_to_mp3(mp4_path)
+                if mp3_path is None:
+                    raise ValueError("Failed to convert video to MP3.")
                 time.sleep(5) # Simulate waiting time
 
                 st.write("☁️ Uploading to Jasper Knowledge Base...")

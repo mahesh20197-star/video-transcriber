@@ -107,7 +107,7 @@ def download_youtube_video(video_url, output_path=".", filename="downloaded_vide
         
         # Configure yt-dlp options
         ydl_opts = {
-            'format': '18',  # Format code 18 is 360p mp4 (low quality, widely compatible)
+            'format': 'best[ext=mp4]',  # Format code 18 is 360p mp4 (low quality, widely compatible)
             'outtmpl': full_path,
             'quiet': False,
             'no_warnings': False,
