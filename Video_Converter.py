@@ -71,7 +71,7 @@ def direct_youtube_video_download(video_url, output_dir=None):
 
         # Download the video
         ydl_opts = {
-            'format': '18',
+            'format': 'best[ext=mp4]',
             'outtmpl': full_path,
             'quiet': True,
             'no_warnings': True,
@@ -81,8 +81,7 @@ def direct_youtube_video_download(video_url, output_dir=None):
 
         return full_path, video_title
     except Exception as e:
-        print(f"Error occurred: {e}")
-        return None, None
+        raise RuntimeError(f"YouTube download failed: {e}")
 
 # download the youtube video and save it 
 def download_youtube_video(video_url, output_path=".", filename="downloaded_video.mp4") -> str:
@@ -107,7 +106,7 @@ def download_youtube_video(video_url, output_path=".", filename="downloaded_vide
         
         # Configure yt-dlp options
         ydl_opts = {
-            'format': 'best[ext=mp4]',  # Format code 18 is 360p mp4 (low quality, widely compatible)
+            'format': 'best[ext=mp4]',
             'outtmpl': full_path,
             'quiet': False,
             'no_warnings': False,
@@ -118,8 +117,7 @@ def download_youtube_video(video_url, output_path=".", filename="downloaded_vide
             ydl.download([video_url])
         return full_path
     except Exception as e:
-        print(f"Error occurred: {e}")
-        return None
+        raise RuntimeError(f"YouTube download failed: {e}")
 
 
 def convert_video_to_mp3(file, output_folder=None) -> str:
